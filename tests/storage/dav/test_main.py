@@ -142,7 +142,8 @@ class TestCaldavStorage(DavStorageTests):
         ('VTODO',),
         ('VEVENT',),
         ('VTODO', 'VEVENT'),
-        ('VTODO', 'VEVENT', 'VJOURNAL')
+        ('VTODO', 'VEVENT', 'VJOURNAL'),
+        ()
     ])
     def test_item_types_performance(self, item_types, monkeypatch):
         kw = self.get_storage_args()
@@ -158,7 +159,7 @@ class TestCaldavStorage(DavStorageTests):
         monkeypatch.setattr(s, '_list', _list)
 
         list(s.list())
-        assert len(calls) == len(item_types)
+        assert len(calls) == (len(item_types) or 1)
 
     @pytest.mark.xfail(dav_server == 'radicale',
                        reason='Radicale doesn\'t support timeranges.')
